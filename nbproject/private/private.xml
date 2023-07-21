@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/Clases/Clientes.java</file>
-            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/ConexionDB/CDB.java</file>
-            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/Main/Main.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Clientes.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/Conexion/conexion.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/ReporteClientes.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Proveedores.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Departamentos.java</file>
             <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Productos.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Empleados.java</file>
             <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Inicio.java</file>
         </group>
     </open-files>
