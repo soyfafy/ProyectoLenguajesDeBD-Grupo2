@@ -144,7 +144,12 @@ public class LoginADMIN extends javax.swing.JFrame {
 
         if (verificarCredenciales(email, contraseña)) {
             JOptionPane.showMessageDialog(rootPane, "DATOS CORRECTOS, INICIANDO SISTEMA!");
-            Inicio v1 = new Inicio();
+            Inicio v1 = null;
+            try {
+                v1 = new Inicio();
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginADMIN.class.getName()).log(Level.SEVERE, null, ex);
+            }
             this.dispose();
             v1.show();
 

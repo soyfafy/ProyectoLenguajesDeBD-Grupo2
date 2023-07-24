@@ -4,23 +4,42 @@
  */
 package GUI;
 
+import Conexion.conexion;
+import GUI.*;
 import java.awt.Color;
-import java.sql.SQLException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
+import oracle.jdbc.OracleCallableStatement;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
  * @author Farg-
  */
 public class Inicio extends javax.swing.JFrame {
+    private Connection con;
+    
 
     /**
      * Creates new form GUI_GUIA
      */
-    public Inicio() {
+    public Inicio() throws SQLException {
         initComponents();
+        this.setLocationRelativeTo(null);
+        con = conexion.conectar();
+        
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,6 +51,9 @@ public class Inicio extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
+        vervista = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        VistaPrueba = new javax.swing.JTextArea();
         btnDepartamentos = new javax.swing.JButton();
         btnProveedores = new javax.swing.JButton();
         btnProductos = new javax.swing.JButton();
@@ -50,6 +72,21 @@ public class Inicio extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 92, 195));
         jLabel2.setText("Facturacion");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 280, 30));
+
+        vervista.setText("ver vista");
+        vervista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vervistaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(vervista, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 280, -1, -1));
+
+        VistaPrueba.setEditable(false);
+        VistaPrueba.setColumns(20);
+        VistaPrueba.setRows(5);
+        jScrollPane1.setViewportView(VistaPrueba);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 620, 240));
 
         btnDepartamentos.setText("Departamentos");
         btnDepartamentos.addActionListener(new java.awt.event.ActionListener() {
@@ -180,6 +217,42 @@ public class Inicio extends javax.swing.JFrame {
         v4.show();
     }//GEN-LAST:event_btnProveedoresActionPerformed
 
+    private void vervistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vervistaActionPerformed
+        
+        CallableStatement llamada = null;
+        ResultSet rs = null;
+        
+    try {
+        String procedimiento = "{CALL VER_VISTA_CLIENTES(?)}";
+        llamada = con.prepareCall(procedimiento);
+        llamada.registerOutParameter(1, OracleTypes.CURSOR);
+        llamada.execute();
+
+        rs = ((OracleCallableStatement) llamada).getCursor(1);
+
+            StringBuilder sb = new StringBuilder();
+            while (rs.next()) {
+                // Aquí asumimos que tu vista tiene dos columnas llamadas "columna1" y "columna2".
+                String columna1 = rs.getString("ID_CLIENTE");
+                String columna2 = rs.getString("NOMBRE");
+                String columna3 = rs.getString("DESCRIPCION");
+                String columna4 = rs.getString("TELEFONO");
+                String columna5 = rs.getString("CORREO");
+                sb.append(columna1).append("\t").append(columna2).append("\t").append(columna3).append("\t").append(columna4).append("\t").append(columna5).append("\n");
+            }
+            VistaPrueba.setText(sb.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (llamada != null) llamada.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_vervistaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -225,12 +298,17 @@ public class Inicio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Inicio().setVisible(true);
+                try {
+                    new Inicio().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea VistaPrueba;
     private javax.swing.JButton btnCliente;
     private javax.swing.JButton btnDepartamentos;
     private javax.swing.JButton btnEmpleados;
@@ -240,5 +318,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JLabel exitTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton vervista;
     // End of variables declaration//GEN-END:variables
 }

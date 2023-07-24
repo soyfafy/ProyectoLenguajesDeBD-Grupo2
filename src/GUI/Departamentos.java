@@ -5,6 +5,9 @@
 package GUI;
 
 import java.awt.Color;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -88,7 +91,12 @@ public class Departamentos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTxtMouseClicked
-        Inicio v1 = new Inicio();
+        Inicio v1 = null;
+        try {
+            v1 = new Inicio();
+        } catch (SQLException ex) {
+            Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
         v1.show();
     }//GEN-LAST:event_exitTxtMouseClicked

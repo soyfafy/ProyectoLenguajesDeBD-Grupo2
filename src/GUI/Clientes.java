@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Types;
 
 /**
  *
@@ -387,7 +388,12 @@ public class Clientes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDireccionesActionPerformed
 
     private void exitTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTxtMouseClicked
-        Inicio v1 = new Inicio();
+        Inicio v1 = null;
+        try {
+            v1 = new Inicio();
+        } catch (SQLException ex) {
+            Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
         v1.show();
     }//GEN-LAST:event_exitTxtMouseClicked

@@ -29,7 +29,8 @@ public class ReporteClientes extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         con = conexion.conectar();
-        MostrarVistClientesPedidos();
+//        MostrarVistClientesPedidos();
+MostrarVistClientes();
 
         
 
@@ -38,66 +39,66 @@ public class ReporteClientes extends javax.swing.JFrame {
 
 
         
-public void MostrarVistClientesPedidos() {
-    DefaultTableModel tabla = (DefaultTableModel) this.TablaVistaCliente.getModel();
-
-    try {
-        String procedimiento = "{CALL VER_VISTA_CLIENTE_PEDIDOS(?)}";
-        CallableStatement llamada = con.prepareCall(procedimiento);
-        llamada.registerOutParameter(1, OracleTypes.CURSOR);
-        llamada.execute();
-
-        ResultSet resultado = ((OracleCallableStatement) llamada).getCursor(1);
-
-        while (resultado.next()) {
-            Object[] fila = new Object[7];
-            fila[0] = resultado.getString("ID_CLIENTE");
-            fila[1] = resultado.getString("NOMBRE");
-            fila[2] = resultado.getString("ID_PRODUCTO");
-            fila[3] = resultado.getString("ID_PEDIDO");
-            fila[4] = resultado.getString("FECHA");
-            fila[5] = resultado.getString("TOTAL_FACTURA");
-            fila[6] = resultado.getString("ESTADO_PRODUCTO");
-            tabla.addRow(fila);
-        }
-
-        resultado.close();
-        llamada.close();
-        con.close();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-
-//    public void MostrarVistClientes() {
-//        DefaultTableModel tabla = (DefaultTableModel) this.TablaVistaCliente.getModel();
+//public void MostrarVistClientesPedidos() {
+//    DefaultTableModel tabla = (DefaultTableModel) this.TablaVistaCliente.getModel();
 //
-//        try {
-//            String procedimiento = "{CALL VER_VISTA_CLIENTES(?)}";
-//            CallableStatement llamada = con.prepareCall(procedimiento);
-//            llamada.registerOutParameter(1, OracleTypes.CURSOR);
-//            llamada.execute();
+//    try {
+//        String procedimiento = "{CALL VER_VISTA_CLIENTE_PEDIDOS(?)}";
+//        CallableStatement llamada = con.prepareCall(procedimiento);
+//        llamada.registerOutParameter(1, OracleTypes.CURSOR);
+//        llamada.execute();
 //
-//            ResultSet resultado = ((OracleCallableStatement) llamada).getCursor(1);
+//        ResultSet resultado = ((OracleCallableStatement) llamada).getCursor(1);
 //
-//            while (resultado.next()) {
-//                Object[] fila = new Object[5];
-//                fila[0] = resultado.getString("ID_CLIENTE");
-//                fila[1] = resultado.getString("NOMBRE");
-//                fila[2] = resultado.getString("DESCRIPCION");
-//                fila[3] = resultado.getString("TELEFONO");
-//                fila[4] = resultado.getString("CORREO");
-//                tabla.addRow(fila);
-//            }
-//
-//            resultado.close();
-//            llamada.close();
-//            con.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
+//        while (resultado.next()) {
+//            Object[] fila = new Object[7];
+//            fila[0] = resultado.getString("ID_CLIENTE");
+//            fila[1] = resultado.getString("NOMBRE");
+//            fila[2] = resultado.getString("ID_PRODUCTO");
+//            fila[3] = resultado.getString("ID_PEDIDO");
+//            fila[4] = resultado.getString("FECHA");
+//            fila[5] = resultado.getString("TOTAL_FACTURA");
+//            fila[6] = resultado.getString("ESTADO_PRODUCTO");
+//            tabla.addRow(fila);
 //        }
+//
+//        resultado.close();
+//        llamada.close();
+//        con.close();
+//    } catch (SQLException e) {
+//        e.printStackTrace();
 //    }
+//}
+
+
+    public void MostrarVistClientes() {
+        DefaultTableModel tabla = (DefaultTableModel) this.TablaVistaCliente.getModel();
+
+        try {
+            String procedimiento = "{CALL VER_VISTA_CLIENTES(?)}";
+            CallableStatement llamada = con.prepareCall(procedimiento);
+            llamada.registerOutParameter(1, OracleTypes.CURSOR);
+            llamada.execute();
+
+            ResultSet resultado = ((OracleCallableStatement) llamada).getCursor(1);
+
+            while (resultado.next()) {
+                Object[] fila = new Object[5];
+                fila[0] = resultado.getString("ID_CLIENTE");
+                fila[1] = resultado.getString("NOMBRE");
+                fila[2] = resultado.getString("DESCRIPCION");
+                fila[3] = resultado.getString("TELEFONO");
+                fila[4] = resultado.getString("CORREO");
+                tabla.addRow(fila);
+            }
+
+            resultado.close();
+            llamada.close();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     
 
     
@@ -153,16 +154,10 @@ public void MostrarVistClientesPedidos() {
 
         TablaVistaCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "NOMBRE", "ID_PRODUCTO", "ID_PEDIDO", "FECHA", "TOTAL_FACTURA", "ESTADO_PRODUCTO"
+                "ID", "NOMBRE", "DESCRIPCION", "TELEFONO", "CORREO", "PRODUCTOS", "FACTURAS"
             }
         ));
         jScrollPane1.setViewportView(TablaVistaCliente);
