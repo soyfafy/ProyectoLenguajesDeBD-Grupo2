@@ -2,7 +2,7 @@ package Clases;
 
 /**
  *
- * @author Farg-
+ * @author Grupo 2 - Lenguajes de Bases de datos
  */
 public class Clientes {
     int id_cliente;

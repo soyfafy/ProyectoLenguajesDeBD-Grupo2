@@ -1,8 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package GUI;
+
+/**
+ *
+ * @author Grupo 2 - Lenguajes de Bases de datos
+ */
 
 import Conexion.conexion;
 import java.awt.Color;
@@ -13,13 +14,11 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Farg-
- */
+
 public class RegisterADMIN extends javax.swing.JFrame {
     private Connection con;
     private DefaultTableModel tabla;
+    int xMouse, yMouse;
 
     
     public RegisterADMIN() throws SQLException {
@@ -71,6 +70,16 @@ public class RegisterADMIN extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(txtContraAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 320, 410, 40));
 
@@ -176,6 +185,17 @@ public class RegisterADMIN extends javax.swing.JFrame {
         exitBtn.setBackground(Color.white);
         exitTxt.setForeground(Color.black);
     }//GEN-LAST:event_exitTxtMouseExited
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_formMousePressed
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        int Y = evt.getYOnScreen();
+        int X = evt.getXOnScreen();
+        setLocation(X - xMouse, Y - yMouse);
+    }//GEN-LAST:event_formMouseDragged
 
     /**
      * @param args the command line arguments

@@ -1,25 +1,127 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package GUI;
-
-import java.awt.Color;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author Farg-
+ * @author Grupo 2 - Lenguajes de Bases de datos
  */
-public class Proveedores extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GUI_GUIA
-     */
-    public Proveedores() {
+import Clases.*;
+import Conexion.conexion;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Types;
+import java.awt.Color;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
+public class Proveedores extends javax.swing.JFrame {
+    private Connection con;
+    int id;
+    private DefaultTableModel tabla;
+    int xMouse, yMouse;
+
+    public Proveedores() throws SQLException {
         initComponents();
+        con = conexion.conectar();
+        Clases.Proveedores objeto = new Clases.Proveedores();
+        MostrarRegistro();
+    }
+   public void insertar (Clases.Proveedores objeto) throws SQLException{
+     CallableStatement sql = con.prepareCall("{call PROVEEDORES_DB.INSERTAR_PROVEEDOR(?,?,?,?,?)}");
+     try{
+         sql.setInt(1,objeto.getId_proveedor());
+         sql.setString(2,objeto.getNombre());
+         sql.setString(3,objeto.getDescripcion());
+         sql.setString(4,objeto.getTelefono());
+         sql.setString(5,objeto.getCorreo());
+         
+         ResultSet rs = sql.executeQuery();
+         MostrarRegistro();
+         rs.close();
+         }catch(Exception ex){
+         JOptionPane.showMessageDialog(rootPane,"ERROR AL INSERTAR DATOS"+ex);
+        
+     
+     }
+    }
+    
+    public void modificar (Clases.Proveedores objeto) throws SQLException{
+     CallableStatement sql = con.prepareCall("{call PROVEEDORES_DB.MODIFICAR_PROVEEDOR(?,?,?,?,?)}");
+     try{
+         
+         sql.setString(2,objeto.getNombre());
+         sql.setString(3,objeto.getDescripcion());
+         sql.setString(4,objeto.getTelefono());
+         sql.setString(5,objeto.getCorreo());
+         sql.setInt(1,objeto.getId_proveedor());
+         
+         ResultSet rs = sql.executeQuery();
+         rs.close();
+         
+         }catch(Exception ex){
+         JOptionPane.showMessageDialog(rootPane,"ERROR AL INSERTAR DATOS"+ex);
+     
+     }
+    }
+    
+    public void eliminar (int id) throws SQLException{
+     CallableStatement sql = con.prepareCall("{call PROVEEDORES_DB.ELIMINAR_PROVEEDOR(?)}");
+
+         sql.setInt(1,id);
+         sql.execute();
+         sql.close();
+
+    }
+    
+    public void MostrarRegistro(){
+        String sql = "SELECT * FROM PROVEEDORES";
+        
+        DefaultTableModel tabla = (DefaultTableModel) this.Tabla_Proveedores.getModel();
+        try{
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                Object[] fila = new Object[5];
+                fila[0] = rs.getString("ID_PROVEEDOR");
+                fila[1] = rs.getString("NOMBRE");
+                fila[2] = rs.getString("DESCRIPCION");
+                fila[3] = rs.getString("TELEFONO");
+                fila[4] = rs.getString("CORREO");
+                
+                tabla.addRow(fila); 
+            }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(rootPane,"ERROR AL MOSTRAR REGISTRO"+ex);
+            
+        }  
+    }
+    
+    public void limpiar_tabla(){
+        DefaultTableModel modelo = (DefaultTableModel) this.Tabla_Proveedores.getModel();
+        modelo.setRowCount(0);   
+    }
+    
+    public void SeleccionarItem(){
+        int fila = this.Tabla_Proveedores.getSelectedRow();
+        if (fila != -1){
+            this.txtIDProveedor.setText(this.Tabla_Proveedores.getValueAt(fila, 0).toString().trim());
+            this.txtNombreP.setText(this.Tabla_Proveedores.getValueAt(fila, 1).toString().trim());
+            this.txtDescripcionP.setText(this.Tabla_Proveedores.getValueAt(fila, 2).toString().trim());
+            this.txtTelefonoP.setText(this.Tabla_Proveedores.getValueAt(fila, 3).toString().trim());
+            this.txtCorreoP.setText(this.Tabla_Proveedores.getValueAt(fila, 4).toString().trim());
+        }
     }
 
     /**
@@ -33,10 +135,35 @@ public class Proveedores extends javax.swing.JFrame {
 
         exitBtn = new javax.swing.JPanel();
         exitTxt = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Tabla_Proveedores = new javax.swing.JTable();
+        txtIDProveedor = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtNombreP = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtDescripcionP = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtTelefonoP = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtCorreoP = new javax.swing.JTextField();
+        btnIngresarP = new javax.swing.JButton();
+        btnModificarP = new javax.swing.JButton();
+        btnEliminarP = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         exitBtn.setBackground(new java.awt.Color(255, 255, 255));
@@ -83,6 +210,75 @@ public class Proveedores extends javax.swing.JFrame {
 
         getContentPane().add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 10, -1, -1));
 
+        Tabla_Proveedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "NOMBRE", "DESCRIPCION", "TELEFONO", "CORREO"
+            }
+        ));
+        Tabla_Proveedores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Tabla_ProveedoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(Tabla_Proveedores);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 480, 290));
+        getContentPane().add(txtIDProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 420, 30));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("ID:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 250, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Nombre:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 310, -1, -1));
+        getContentPane().add(txtNombreP, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 330, 420, 30));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setText("Descripcion:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 370, -1, -1));
+        getContentPane().add(txtDescripcionP, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 390, 420, 30));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("Telefono:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 430, -1, -1));
+        getContentPane().add(txtTelefonoP, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 450, 420, 30));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setText("Correo:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 490, -1, -1));
+        getContentPane().add(txtCorreoP, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 510, 420, 30));
+
+        btnIngresarP.setBackground(new java.awt.Color(204, 255, 204));
+        btnIngresarP.setText("Ingresar");
+        btnIngresarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarPActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnIngresarP, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 560, -1, -1));
+
+        btnModificarP.setBackground(new java.awt.Color(255, 153, 102));
+        btnModificarP.setText("Modificar");
+        btnModificarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarPActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnModificarP, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 560, -1, -1));
+
+        btnEliminarP.setBackground(new java.awt.Color(255, 102, 102));
+        btnEliminarP.setText("Eliminar");
+        btnEliminarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarPActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEliminarP, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 560, -1, -1));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/PROVEEDORES.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 950, 600));
 
@@ -110,6 +306,111 @@ public class Proveedores extends javax.swing.JFrame {
         exitBtn.setBackground(Color.white);
         exitTxt.setForeground(Color.black);
     }//GEN-LAST:event_exitTxtMouseExited
+
+    private void Tabla_ProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Tabla_ProveedoresMouseClicked
+        SeleccionarItem();
+    }//GEN-LAST:event_Tabla_ProveedoresMouseClicked
+
+    private void btnIngresarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarPActionPerformed
+        // Boton Ingresar
+        if(this.txtIDProveedor.getText().trim()==""){
+            JOptionPane.showMessageDialog(rootPane,"Ingresar ID PROVEEDOR");
+            return;
+        }
+        if(this.txtNombreP.getText().trim()==""){
+            JOptionPane.showMessageDialog(rootPane,"Ingresar NOMBRE");
+            return;
+        }
+        if(this.txtDescripcionP.getText().trim()==""){
+            JOptionPane.showMessageDialog(rootPane,"Ingresar DESCRIPCION");
+            return;
+        }
+        if(this.txtTelefonoP.getText().trim()==""){
+            JOptionPane.showMessageDialog(rootPane,"Ingresar TELEFONO");
+            return;
+        }
+        if(this.txtCorreoP.getText().trim()==""){
+            JOptionPane.showMessageDialog(rootPane,"Ingresar CORREO");
+            return;
+        }else{
+            {
+                int id_proveedor = Integer.parseInt(txtIDProveedor.getText());
+                String nombre = txtNombreP.getText();
+                String descripcion = txtDescripcionP.getText();
+                String telefono = txtTelefonoP.getText();
+                String correo = txtCorreoP.getText();
+
+                try{
+                    Clases.Proveedores objetos = new Clases.Proveedores(id_proveedor,nombre,descripcion,telefono,correo);
+                    insertar(objetos);
+
+                    JOptionPane.showMessageDialog(rootPane,"DATOS GUARDADOS CON EXITO!");
+                    txtIDProveedor.setText(null);
+                    txtNombreP.setText(null);
+                    txtDescripcionP.setText(null);
+                    txtTelefonoP.setText(null);
+                    txtCorreoP.setText(null);
+
+                    limpiar_tabla();
+                    MostrarRegistro();
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(rootPane,"ERROR!"+ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnIngresarPActionPerformed
+
+    private void btnModificarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPActionPerformed
+        // Boton Modificar
+        try{
+            Connection cn = conexion.conectar();
+            String sql = ("{call PROVEEDORES_DB.MODIFICAR_PROVEEDOR(?,?,?,?,?)}");
+            CallableStatement ps = cn.prepareCall(sql);
+            ps.setInt(1, Integer.valueOf(txtIDProveedor.getText()));
+            ps.setString(2, txtNombreP.getText());
+            ps.setString(3, txtDescripcionP.getText());
+            ps.setString(4, txtTelefonoP.getText());
+            ps.setString(5, txtCorreoP.getText());
+
+            ps.execute();
+            ps.close();
+            cn.close();
+            JOptionPane.showMessageDialog(rootPane,"REGISTRO MODIFICADO CON EXITO");
+
+            limpiar_tabla();
+            MostrarRegistro();
+
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(rootPane,"ERROR AL INSERTAR DATOS"+e);
+        }
+    }//GEN-LAST:event_btnModificarPActionPerformed
+
+    private void btnEliminarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPActionPerformed
+        // Boton Eliminar
+        try{
+            JOptionPane.showMessageDialog(null,"REGISTRO ELIMINADO CON EXITO");
+            id = Integer.parseInt(String.valueOf(this.Tabla_Proveedores.getValueAt(this.Tabla_Proveedores.getSelectedRow(),0)));
+            eliminar(id);
+            Clases.Proveedores en = new Clases.Proveedores();
+            limpiar_tabla();
+            MostrarRegistro();
+
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"SELECCIONE EL REGISTRO QUE DESEA ELIMINAR"+e);
+
+        }
+    }//GEN-LAST:event_btnEliminarPActionPerformed
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_formMousePressed
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        int Y = evt.getYOnScreen();
+        int X = evt.getXOnScreen();
+        setLocation(X - xMouse, Y - yMouse);
+    }//GEN-LAST:event_formMouseDragged
 
     /**
      * @param args the command line arguments
@@ -172,14 +473,33 @@ public class Proveedores extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Proveedores().setVisible(true);
+                try {
+                    new Proveedores().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Proveedores.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Tabla_Proveedores;
+    private javax.swing.JButton btnEliminarP;
+    private javax.swing.JButton btnIngresarP;
+    private javax.swing.JButton btnModificarP;
     private javax.swing.JPanel exitBtn;
     private javax.swing.JLabel exitTxt;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField txtCorreoP;
+    private javax.swing.JTextField txtDescripcionP;
+    private javax.swing.JTextField txtIDProveedor;
+    private javax.swing.JTextField txtNombreP;
+    private javax.swing.JTextField txtTelefonoP;
     // End of variables declaration//GEN-END:variables
 }

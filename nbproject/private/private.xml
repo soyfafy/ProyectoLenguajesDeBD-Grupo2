@@ -4,10 +4,19 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Clientes.java</file>
-            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/ReporteClientes.java</file>
-            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/Clases/Clientes.java</file>
-            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/Clases/Pedidos.java</file>
-            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Pedidos.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Login_Register.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Proveedores.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/V_Clientes_Productos.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/RegisterADMIN.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/V_Direcciones.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Productos.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/F_Pagos.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/V_Proveedores.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/C_Direcciones.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Departamentos.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/LoginADMIN.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Empleados.java</file>
+            <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/V_Productos.java</file>
             <file>file:/C:/Users/Farg-/Documents/NetBeansProjects/ProyectoLenguajesDB/src/GUI/Inicio.java</file>
         </group>
     </open-files>

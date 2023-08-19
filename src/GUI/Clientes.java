@@ -1,5 +1,10 @@
 package GUI;
 
+/**
+ *
+ * @author Grupo 2 - Lenguajes de Bases de datos
+ */
+
 import Conexion.conexion;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -10,15 +15,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Types;
 
-/**
- *
- * @author Grupo 2 - Lenguajes de Bases de datos
- */
 
 public class Clientes extends javax.swing.JFrame {
     private Connection con;
     int id;
     private DefaultTableModel tabla;
+    int xMouse, yMouse;
 
     
     public Clientes() throws SQLException {
@@ -147,6 +149,16 @@ public class Clientes extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnDirecciones.setBackground(new java.awt.Color(0, 0, 0));
@@ -374,9 +386,9 @@ public class Clientes extends javax.swing.JFrame {
     }//GEN-LAST:event_Tabla_ClientesMouseClicked
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-            ReporteClientes v1 = null;
+            V_Clientes_Productos v1 = null;
         try {
-            v1 = new ReporteClientes();
+            v1 = new V_Clientes_Productos();
         } catch (SQLException ex) {
             Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -384,7 +396,14 @@ public class Clientes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnDireccionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDireccionesActionPerformed
-        // TODO add your handling code here:
+                    C_Direcciones v2 = null;
+        try {
+            v2 = new C_Direcciones();
+        } catch (SQLException ex) {
+            Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            v2.show();
+
     }//GEN-LAST:event_btnDireccionesActionPerformed
 
     private void exitTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTxtMouseClicked
@@ -407,6 +426,18 @@ public class Clientes extends javax.swing.JFrame {
         exitBtn.setBackground(Color.white);
         exitTxt.setForeground(Color.black);
     }//GEN-LAST:event_exitTxtMouseExited
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_formMousePressed
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+
+        int Y = evt.getYOnScreen();
+        int X = evt.getXOnScreen();
+        setLocation(X - xMouse, Y - yMouse);
+    }//GEN-LAST:event_formMouseDragged
 
     /**
      * @param args the command line arguments
